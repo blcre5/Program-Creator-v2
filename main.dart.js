@@ -83978,7 +83978,7 @@ p=o==null?p.c:o
 r.a.toString
 o=A.hL("Program \u2192 Word",q,q,q,q,q,q)
 s=t.E
-return new A.zY(new A.vP(o,p,new A.SS(q,q,1/0,56),q),A.aIm(A.ZR(A.c([A.zW(A.c([B.MX,A.a1D(A.arY(r.d,B.jL,!0)),B.kO,A.x9(B.kX,r.ga1B())],s),B.bc,B.b0,B.c8),B.ym,A.zW(A.c([B.MW,A.a1D(A.arY(r.e,B.jL,!1)),B.kO,A.x9(B.kX,r.ga1C())],s),B.bc,B.b0,B.c8),B.ym,A.zW(A.c([B.MV,A.a1D(A.arY(r.f,B.jL,!1)),B.kO,new A.NU(A.x9(B.kX,q),!1,!0,!0,!0,q)],s),B.bc,B.b0,B.c8),B.yn,A.zW(A.c([A.x9(B.Sd,r.gaau()),B.MT,A.x9(B.Sf,r.ga4e())],s),B.bc,B.b0,B.c8),B.yn,B.Sj],s),B.bG,B.b0,B.c8),B.De),q)}}
+return new A.zY(new A.vP(o,p,new A.SS(q,q,1/0,56),q),A.aIm(A.ZR(A.c([A.zW(A.c([B.MX,A.a1D(A.arY(r.d,B.jL,!0)),B.kO,A.x9(B.kX,r.ga1B())],s),B.bc,B.b0,B.c8),B.ym,A.zW(A.c([B.MW,A.a1D(A.arY(r.e,B.jL,!1)),B.kO,A.x9(B.kX,r.ga1C())],s),B.bc,B.b0,B.c8),B.ym,A.zW(A.c([B.MV,A.a1D(A.arY(r.f,B.jL,!1)),B.kO,new A.NU(A.x9(B.kX,q),!1,!0,!0,!0,q)],s),B.bc,B.b0,B.c8),B.yn,A.zW(A.c([A.x9(B.Se,r.gaau()),B.MT,A.x9(B.Sg,r.ga4e())],s),B.bc,B.b0,B.c8),B.yn,B.Sb],s),B.bG,B.b0,B.c8),B.De),q)}}
 A.ajS.prototype={
 $0(){return this.a.w=null},
 $S:0}
@@ -84027,7 +84027,7 @@ s=J.bq(q.d,j)
 r=j+1
 l.push(new A.Hd(B.Da,new A.K1(new A.LN(B.Ju,j,!0,p),A.hL(""+r+". "+J.bq(q.d,j).c,p,p,p,B.hN,p,p),A.hL(J.bq(q.d,j).b,p,p,p,p,p,p),p),new A.dv(s.a,k)))
 j=r}o=A.aqI(A.awV(A.aHS(!1,l,new A.ak3(q),n),n,!0),B.H,new A.ak(0,1/0,0,o.a.b*0.8),p,p,p,p,600)
-return A.au8(A.c([A.Nd(B.Sl,new A.ak4(q,a),p),A.Nd(B.Sh,new A.ak5(a),p),A.x9(B.Sb,new A.ak6(q,a))],m),o,B.Sg)}}
+return A.au8(A.c([A.Nd(B.Sl,new A.ak4(q,a),p),A.Nd(B.Si,new A.ak5(a),p),A.x9(B.Sc,new A.ak6(q,a))],m),o,B.Sh)}}
 A.ak3.prototype={
 $2(a,b){var s,r={}
 r.a=b
@@ -89192,12 +89192,12 @@ B.ap=new A.ey(0,0,null,null)
 B.MT=new A.ey(12,null,null,null)
 B.kO=new A.ey(8,null,null,null)
 B.MU=new A.ey(1/0,1/0,null,null)
-B.Se=new A.eB("Heading:",null,null,null,null,null,null,null,null)
-B.MV=new A.ey(130,null,B.Se,null)
-B.Si=new A.eB("Save as:",null,null,null,null,null,null,null,null)
-B.MW=new A.ey(130,null,B.Si,null)
-B.Sc=new A.eB("CSV file:",null,null,null,null,null,null,null,null)
-B.MX=new A.ey(130,null,B.Sc,null)
+B.Sf=new A.eB("Heading:",null,null,null,null,null,null,null,null)
+B.MV=new A.ey(130,null,B.Sf,null)
+B.Sj=new A.eB("Save as:",null,null,null,null,null,null,null,null)
+B.MW=new A.ey(130,null,B.Sj,null)
+B.Sd=new A.eB("CSV file:",null,null,null,null,null,null,null,null)
+B.MX=new A.ey(130,null,B.Sd,null)
 B.ym=new A.ey(null,12,null,null)
 B.yn=new A.ey(null,24,null,null)
 B.MY=new A.Az(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
@@ -89572,18 +89572,18 @@ B.QK=new A.n(!0,B.K,null,".AppleSystemUIFont",null,null,null,null,null,null,null
 B.R5=new A.n(!0,B.l,null,".AppleSystemUIFont",null,null,null,null,null,null,null,null,null,null,null,null,null,B.f,null,null,null,"blackRedwoodCity labelMedium",null,null,null,null)
 B.Og=new A.n(!0,B.l,null,".AppleSystemUIFont",null,null,null,null,null,null,null,null,null,null,null,null,null,B.f,null,null,null,"blackRedwoodCity labelSmall",null,null,null,null)
 B.Sa=new A.du(B.Q_,B.OY,B.Q0,B.Qr,B.OF,B.ON,B.Pg,B.Qm,B.Ps,B.QN,B.O9,B.Or,B.QK,B.R5,B.Og)
-B.Sb=new A.eB("Apply order",null,null,null,null,null,null,null,null)
-B.Sd=new A.eB("Order program...",null,null,null,null,null,null,null,null)
-B.Sf=new A.eB("Export to Word",null,null,null,null,null,null,null,null)
-B.Sg=new A.eB("Program order \u2014 drag tiles to reorder",null,null,null,null,null,null,null,null)
-B.Sh=new A.eB("Cancel",null,null,null,null,null,null,null,null)
 B.BR=new A.E(1,0.9607843137254902,0.9607843137254902,0.9607843137254902,B.h)
 B.BL=new A.E(1,0.9333333333333333,0.9333333333333333,0.9333333333333333,B.h)
 B.Bs=new A.E(1,0.7411764705882353,0.7411764705882353,0.7411764705882353,B.h)
 B.HR=new A.d6([50,B.mk,100,B.BR,200,B.BL,300,B.mm,350,B.d0,400,B.Bs,500,B.ms,600,B.e2,700,B.d_,800,B.c5,850,B.iK,900,B.m3],t.pl)
 B.I6=new A.rM(B.HR,1,0.6196078431372549,0.6196078431372549,0.6196078431372549,B.h)
 B.R3=new A.n(!0,B.I6,null,null,null,null,null,null,null,null,null,null,1.5,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.Sj=new A.eB("In the program CSV, rows with composer + dates and empty title register dates once.\nWork rows omit composer_dates to use the lookup.\nMovements/performers: comma, newline, or | as before.",null,B.R3,null,null,null,null,null,null)
+B.Sb=new A.eB("In the program CSV, rows with composer dates only need to be entered once.\nPerformers are entered as Keith Colon VN, John Doe PF, etc.\nInstruments codes are VN, VLN2, VA, VC, DB, FL, OB, CL, FH, BN, PF.\n",null,B.R3,null,null,null,null,null,null)
+B.Sc=new A.eB("Apply order",null,null,null,null,null,null,null,null)
+B.Se=new A.eB("Order program...",null,null,null,null,null,null,null,null)
+B.Sg=new A.eB("Export to Word",null,null,null,null,null,null,null,null)
+B.Sh=new A.eB("Program order \u2014 drag tiles to reorder",null,null,null,null,null,null,null,null)
+B.Si=new A.eB("Cancel",null,null,null,null,null,null,null,null)
 B.kX=new A.eB("Browse...",null,null,null,null,null,null,null,null)
 B.Sk=new A.eB("OK",null,null,null,null,null,null,null,null)
 B.Sl=new A.eB("Reset from CSV",null,null,null,null,null,null,null,null)
