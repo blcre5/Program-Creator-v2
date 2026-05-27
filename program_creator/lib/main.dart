@@ -204,7 +204,13 @@ Future<List<Map<String, dynamic>>> readCsvFile(Uint8List bytes) async {
   if (bytes.length >= 3 && bytes[0] == 0xEF && bytes[1] == 0xBB && bytes[2] == 0xBF) {
     contents = utf8.decode(bytes.sublist(3), allowMalformed: true);
   } else {
-    contents = utf8.decode(bytes, allowMalformed: true);
+    try {
+      // Try to read as strict UTF-8 first to catch encoding errors
+      contents = utf8.decode(bytes);
+    } catch (_) {
+      // Fall back to Latin-1 to support Excel's default ANSI CSV exports
+      contents = latin1.decode(bytes, allowInvalid: true);
+    }
   }
 
   // Normalize line endings to \n to avoid CsvToListConverter confusion
@@ -300,7 +306,7 @@ Future<List<Work>> readWorksCsv(Uint8List bytes) async {
 
 Future<void> writeProgramDocx(List<Work> works, String outPath, String heading) async {
   final buffer = StringBuffer();
-  buffer.writeln('<html><head><meta charset="utf-8"></head><body style="font-family: Arial, sans-serif;">');
+  buffer.writeln('<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></head><body style="font-family: Arial, sans-serif;">');
 
   if (heading.isNotEmpty) {
     buffer.writeln('<h1 style="text-align: center;">$heading</h1><br/>');
@@ -329,7 +335,7 @@ Future<void> writeProgramDocx(List<Work> works, String outPath, String heading) 
 
   buffer.writeln('</body></html>');
   
-  final fileBytes = utf8.encode('\uFEFF${buffer.toString()}');
+  final fileBytes = utf8.encode(buffer.toString());
   if (kIsWeb) {
     downloadDocument(outPath, Uint8List.fromList(fileBytes));
   } else {
