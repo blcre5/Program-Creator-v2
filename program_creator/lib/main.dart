@@ -560,9 +560,9 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(height: 24),
             const Text(
-              "In the program CSV, rows with composer + dates and empty title register dates once.\n"
-              "Work rows omit composer_dates to use the lookup.\n"
-              "Movements/performers: comma, newline, or | as before.",
+              "In the program CSV, rows with composer dates only need to be entered once.\n"
+              "Performers are entered as Keith Colon VN, John Doe PF, etc.\n"
+              "Instruments codes are VN, VLN2, VA, VC, DB, FL, OB, CL, FH, BN, PF.\n",
               style: TextStyle(color: Colors.grey, height: 1.5),
             ),
           ],
