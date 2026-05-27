@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:csv/csv.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'web_download.dart';
 
 const Map<String, List<String>> instrumentLabels = {
   "PF": ["piano", "pianos"],
@@ -196,11 +199,7 @@ class Work {
   }) : id = id ?? UniqueKey().toString();
 }
 
-Future<List<Map<String, dynamic>>> readCsvFile(String path) async {
-  final file = File(path);
-  if (!await file.exists()) return [];
-
-  final bytes = await file.readAsBytes();
+Future<List<Map<String, dynamic>>> readCsvFile(Uint8List bytes) async {
   String contents;
   if (bytes.length >= 3 && bytes[0] == 0xEF && bytes[1] == 0xBB && bytes[2] == 0xBF) {
     contents = utf8.decode(bytes.sublist(3), allowMalformed: true);
@@ -228,8 +227,8 @@ Future<List<Map<String, dynamic>>> readCsvFile(String path) async {
   return rawRows;
 }
 
-Future<List<Work>> readWorksCsv(String path) async {
-  final rawRows = await readCsvFile(path);
+Future<List<Work>> readWorksCsv(Uint8List bytes) async {
+  final rawRows = await readCsvFile(bytes);
   if (rawRows.isEmpty) throw Exception("CSV appears to be empty.");
 
   Map<String, String> composerDatesLookup = {};
@@ -329,9 +328,14 @@ Future<void> writeProgramDocx(List<Work> works, String outPath, String heading) 
   }
 
   buffer.writeln('</body></html>');
-  final file = File(outPath);
-  // Write with a UTF-8 BOM so MS Word recognizes the encoding correctly
-  await file.writeAsString('\uFEFF${buffer.toString()}', encoding: utf8);
+  
+  final fileBytes = utf8.encode('\uFEFF${buffer.toString()}');
+  if (kIsWeb) {
+    downloadDocument(outPath, Uint8List.fromList(fileBytes));
+  } else {
+    final file = File(outPath);
+    await file.writeAsBytes(fileBytes);
+  }
 }
 
 void main() {
@@ -366,6 +370,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final outController = TextEditingController();
   final headingController = TextEditingController(text: "PROGRAM");
 
+  Uint8List? _csvBytes;
   List<Work>? orderedWorks;
 
   @override
@@ -384,17 +389,25 @@ class _MyHomePageState extends State<MyHomePage> {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['csv'],
+      withData: true,
     );
     if (result != null) {
+      final file = result.files.single;
       setState(() {
-        csvController.text = result.files.single.path!;
+        _csvBytes = file.bytes;
+        if (_csvBytes == null && !kIsWeb && file.path != null) {
+          _csvBytes = File(file.path!).readAsBytesSync();
+        }
+        
+        csvController.text = file.name;
+        
         if (outController.text.isEmpty) {
-          String path = csvController.text;
-          int dotIndex = path.lastIndexOf('.');
+          String baseName = kIsWeb ? file.name : (file.path ?? file.name);
+          int dotIndex = baseName.lastIndexOf('.');
           if (dotIndex != -1) {
-            outController.text = '${path.substring(0, dotIndex)}_program.doc';
+            outController.text = '${baseName.substring(0, dotIndex)}_program.doc';
           } else {
-            outController.text = '${path}_program.doc';
+            outController.text = '${baseName}_program.doc';
           }
         }
         _clearOrderedWorks();
@@ -403,6 +416,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _browseOut() async {
+    if (kIsWeb) {
+      _showMessage("Web mode", "On the web, type the desired filename in the 'Save as' box. It will automatically download when you click Export.");
+      return;
+    }
     String? outputFile = await FilePicker.platform.saveFile(
       dialogTitle: 'Save Word document as',
       fileName: 'program.doc',
@@ -430,15 +447,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _openOrderEditor() async {
-    String csvPath = csvController.text.trim();
-    if (csvPath.isEmpty) {
+    if (_csvBytes == null) {
       _showMessage("Missing file", "Choose a CSV file first.");
       return;
     }
 
     List<Work> baseWorks;
     try {
-      baseWorks = await readWorksCsv(csvPath);
+      baseWorks = await readWorksCsv(_csvBytes!);
     } catch (e) {
       _showMessage("Could not read CSV", e.toString());
       return;
@@ -457,7 +473,7 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (context) {
         return OrderEditorDialog(
           works: initial,
-          onReset: () => readWorksCsv(csvPath),
+          onReset: () => readWorksCsv(_csvBytes!),
         );
       },
     );
@@ -468,24 +484,23 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _exportToWord() async {
-    String csvPath = csvController.text.trim();
     String outPath = outController.text.trim();
     String heading = headingController.text.trim();
 
-    if (csvPath.isEmpty) {
+    if (_csvBytes == null) {
       _showMessage("Missing file", "Choose a CSV file.");
       return;
     }
     if (outPath.isEmpty) {
-      _showMessage("Missing file", "Choose where to save the Word document.");
+      _showMessage("Missing file", "Provide a filename or path to save the Word document.");
       return;
     }
 
     try {
-      List<Work> works = orderedWorks ?? await readWorksCsv(csvPath);
+      List<Work> works = orderedWorks ?? await readWorksCsv(_csvBytes!);
       await writeProgramDocx(works, outPath, heading);
       String note = orderedWorks != null ? " (custom order)" : "";
-      _showMessage("Done", "Wrote ${works.length} work(s) to:\n$outPath$note");
+      _showMessage("Done", kIsWeb ? "Document downloaded successfully!$note" : "Wrote ${works.length} work(s) to:\n$outPath$note");
     } catch (e) {
       _showMessage("Export failed", e.toString());
     }
@@ -506,7 +521,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Row(
               children: [
                 const SizedBox(width: 130, child: Text('CSV file:')),
-                Expanded(child: TextField(controller: csvController, decoration: const InputDecoration(isDense: true, border: OutlineInputBorder()))),
+                Expanded(child: TextField(controller: csvController, readOnly: true, decoration: const InputDecoration(isDense: true, border: OutlineInputBorder()))),
                 const SizedBox(width: 8),
                 ElevatedButton(onPressed: _browseCsv, child: const Text('Browse...')),
               ]
